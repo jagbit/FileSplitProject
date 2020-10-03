@@ -28,12 +28,14 @@ Input_Text_Sample.txt holds 20050 records. I add the path to the sample text in 
 	
 ***Summary and 'pseudocode'***	
 
-Count number of records	
-Identify records	
-Find the number of records (y) that would split closest to evenly to result in user defined number of output files with y records in each	
+Count number of records 	
 
-For line in notice_line:	
-	For the number of lines in notice_line	
+Identify records 	
+
+Find the number of records (y) that would split closest to evenly to result in user defined number of output files with y records in each 	
+
+For line in notice_line: 	
+	For the number of lines in notice_line 	
 	If a line starts with "Group", Create an empty file	
 	Name the empty file File_n , n for line number in notice_line	
 	Put the line in the empty record	
