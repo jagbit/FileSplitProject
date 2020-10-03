@@ -2,8 +2,6 @@
 
 ***Description***
 
-I need help with a task at work. Details below.	
-
 Given file A with x number of records, split the file into y number of smaller files containing equal number of records.	
 
 Notes:	
