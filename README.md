@@ -7,17 +7,18 @@ I need help with a task at work. Details below.
 Given file A with x number of records, split the file into y number of smaller files containing equal number of records.	
 
 Notes:	
-	*Records are can only be identified by the line starting with "GROUP"	
-	*ALL text is surrounded by quotes ("")	
-	*All text is delimited by semicolon (;)	
-	*All text ends in a new line	
-	*All files end in a newline	
-	*All quotes and delimiters must remain intact. 	
-	*Just splitting the file as is, no other changes. Keeping order.	
-	*File may contain any number of records - primarily used for files with >10k records	
-	*Records lengths vary by number of (new)lines	
-	*All files will not have the same order of body text between records and may end with different text; the only marker of a new record is a line beginning with "GROUP"	
-	*Input_Text_Sample.txt holds the sample text. It holds 20050 'records' (Lines that start with group - all text after until the next 'Group' is part of the same 'record')	
+* Records are can only be identified by the line starting with "GROUP"	
+* ALL text is surrounded by quotes ("")	
+* All text is delimited by semicolon (;)	
+* All text ends in a new line	
+* All files end in a newline	
+* All quotes and delimiters must remain intact. 	
+* Just splitting the file as is, no other changes. Keeping order.	
+* File may contain any number of records - primarily used for files with >10k records	
+* Records lengths vary by number of (new)lines	
+* All files will not have the same order of body text between records and may end with different text; the only marker of a new record is a line beginning with "GROUP"	
+* Input_Text_Sample.txt holds the sample text. It holds 20050 'records' (Lines that start with group - all text after until the next 'Group' is part of the same 'record')	
+
 Input: path to file	
 Output: N number of files each with y number of records	
 	
