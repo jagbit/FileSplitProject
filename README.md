@@ -19,7 +19,8 @@ Notes:
 * All files will not have the same order of body text between records and may end with different text; the only marker of a new record is a line beginning with "GROUP"	
 * Input_Text_Sample.txt holds the sample text. It holds 20050 'records' (Lines that start with group - all text after until the next 'Group' is part of the same 'record')	
 
-Input: path to file	
+Input: path to file 	
+
 Output: N number of files each with y number of records	
 	
 EXAMPLE:	
