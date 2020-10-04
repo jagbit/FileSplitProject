@@ -2,248 +2,83 @@
 title: "Notice Splitter"
 author: "Josh Greer"
 date: "07/06/2020"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
-Various scripts attempting to manipulate the lines of a raw notice.
-
-I first explore stringr and purrr for string manipulation and mapping.
-I know I need a an exact regex to identify positions of lines. 
-
-I'll need to use `grep()` to return the values that match the pattern. 
-
-`grepl()` will return a vector of logicals.
- 
-```{r}
+```{r,echo=False}
 library(stringr)
 library(purrr)
 library(magrittr)
 library(tidyr)
-
-file_path <- "./Input_Text_Sample.txt"
-
-newblock_regex <- '\"GROUP\"'
-
-# Read the lines of the file into a string data type
-noticeline <- readLines(file_path)
-typeof(noticeline)
-
-# alt <- regex("(*|'\"GROUP\"')*")
-
-# inds <- which(newblock_regex %in% noticeline)
-# Identify each line in notice line
-parsed <- list()
-record <- list()
-for(line in noticeline)
-{
-  #group_line <- grep(newblock_regex, line)
-  #grouplines <- character()
-  if(isTRUE(stringr::str_detect(line, newblock_regex))){
-    #record <- character()
-    record <- append(record, line)
-    parsed <- append(parsed, record)
-  }
-  print(parsed)
-}
-
-for(i in 1:3){
-  assign("record",i,)
-}
-
-LnIdx = 0
-for(i in seq_along(head(noticeline)))
-{
-  LnIdx =+ 1
-}
-
-str_detect(noticeline, newblock_regex) 
-str_which(noticeline, newblock_regex)
-str_which(splitnotice, recend_pos)
-
-for (line in noticeline)
-{
-  #prev_line <- line
-  if ( line == grepl(newblock_regex, line) )
-  {
-    if (!is.null(record))
-    {
-      parsed[i] <- record
-    }
-    append(record, line)
-  }else{
-    append(record,line)
-  }
-  
-  append(parsed,record)
-  
-}
-
-
+library(dplyr)
 ```
 
-
-08/24/2020
-```{r}
-
-pacman::p_load(stringr,purrr,magrittr,tidyr,readr)
-
-file_path <- "./Input_Text_Sample.txt"
-
-newblock_regex <- '\"GROUP\"'
-
-noticeline <- readr::read_lines(file_path)
-
-#splitnotice <- strsplit(readLines(file_path), '\n', perl = TRUE) # RETURNS: LIST. Not what we want.
-
-# COUNT NUMBER OF (GROUP) RECORDS in the VI FILE
-rec_count <- floor(sum(stringr::str_detect(noticeline, newblock_regex)))
-
-
-parsed <- character(length = rec_count)
-record <- character()
-
-#for (l in noticeline)
-#  last_l <- l
-# if (isTRUE(stringr::str_detect(l, newblock_regex)) & last_l != stringr::str_detect(l, newblock_regex))
-      
-```
-
-
-08/24/2020
-With the python reference close by.
-
-```{r SplitNotice, echo=FALSE , warning=FALSE}
-
-pacman::p_load(stringr,purrr,magrittr,tidyr)
-
-file_path <- "./Input_Text_Sample.txt"
-
-newblock_regex <- '\"GROUP\"'
-
-# Read the notice as a file
-raw_notice <- file(file_path, open = 'rb')
-
-## Read the lines of the file into a string data type
-
-# Returns a list but can use 'perl = TRUE'... 
-# Think we want char vector not list? Faster?
-splitnotice <- strsplit(readLines(file_path), '\n', perl = TRUE)
-
-#noticeline <- readr::read_lines(file_path)
-
-noticelen <- length(splitnotice)
-
-# COUNT NUMBER OF (GROUP) RECORDS in the VI FILE
-rec_count <- floor(sum(stringr::str_detect(splitnotice, newblock_regex)))
-
-# Find greatest even factor to know number of equal records that will be in each output file 
-# Currently returns NULL - TO DO : FIXs
-maxEvenFactor <- function(record_count) {
-  # From https://www.geeksforgeeks.org/greatest-odd-factor-of-an-even-number/
-  
-  pow_2 <- log(record_count, base = 2L)
-  
-  # Initialize i with 1
-  i <- 1
-  
-  # Iterate till i <= pow_2
-  while(i <= pow_2){
-    
-    # Find the pow(2, i)
-    fac_2 <- (2^i)
-    
-    if (record_count %% fac_2 == 0)
-      
-      # If factor is even, then return
-      # the number and break
-      if ( (record_count %/% fac_2) %% 2 == 0 )
-        return((record_count %/% fac_2))
-        break
-     i <- i + 1
-  }
-  
-}
-
-# Doesn't work
-res = maxEvenFactor(rec_count)
-
-# Init parsed as empty list 
-# to be filled with records
-#record_env <- new.env()
-#record <- list(NULL)
-#append_parsed <- function(record_env, record){
-#  record_env$rec <- record
-#}
-#  list(record)
-#reclist <- list(lastblock)
-
-# next_line <- line+1 --> for line in seq_along(splitnotice)
-
-parsed_list <- list()
-record_indices <- grep(newblock_regex, splitnotice)
-record <- vector('integer', length = length(record_indices))
-
-#original
-for(line in splitnotice)
-{
-  if( line == str_detect(newblock_regex, line) )
-  {
-    if (isTRUE(record))
-    {
-      parsed <- append(record, line)
-    }
-    lastblock <- append(lastblock, line)
-  }else{
-    parsed <- append(parsed, lastblock)
-  }
-  
-  parsed <- append(parsed, lastblock)
-  print(parsed)
-}
-
-```
-
-
-### 08/25/2020 SUBSETTING
+# Import Data
 
 ```{r}
-
-file_path <- "./Input_Text_Sample.txt"
-
-# Read the notice as a file
-raw_notice <- file(file_path, open = "rb")
-print(raw_notice)
-
-# Read the lines of the file into a string data type
-noticeline <- readLines(raw_notice)
-close(raw_notice)
-
-typeof(noticeline)
-str(noticeline) # Character vector of 48 lines
-# print('Notice Lines')
-# print(noticeline)
-
-parsed <- list("")
-lastblock <- list(character())
-newblock_regex <- '\"GROUP\"'
-
-# Indices of the marker line: 'GROUP'
-# using grep(newblock_regex, noticeline)
-# to identify 'GROUP'
-print(grep(newblock_regex, noticeline))
-record_indices <- grep(newblock_regex, noticeline)
-
-# TESTING
-pointer <- 2
-pointer2 <- pointer+1
-first_record <- noticeline[ record_indices[pointer]:record_indices[pointer2]-1 ] 
-first_record[-1]
-
-
-# Identify the lines between newblock_regex
-
-noticeline[groupIndices-1:groupIndices+1]
-
-
+file_path <- "./SampleText/Input_Text_Sample.txt"
+data <- read.table(file_path, header = FALSE, sep = "\n", quote = "")
+data['const_key']=1
+num_files = as.integer(readline(prompt='Enter Number of Files Required:'))
 ```
 
+# Create Group Key
+
+```{r}
+rows = nrow(data)
+for(i in 2:rows)
+{ 
+  if (str_detect(data[i,'V1'],'GROUP')==TRUE){
+    data[i,'const_key'] = data[i-1,'const_key']+1
+  }else{
+    data[i,'const_key'] = data[i-1,'const_key']
+  }
+}
+```
+
+# Summarize Records
+
+```{r}
+new_data = data.frame()
+r = max(data['const_key'])
+for(i in 1:r)
+{
+  set1= filter(data,data['const_key']==i)
+  d = paste(unlist(set1$V1), collapse ="\n")
+  df = cbind(i,d)
+  new_data = rbind(new_data,df)
+}
+```
+
+# get the number of file splits
+
+```{r}
+total_rows = nrow(new_data)
+file_records = 0
+
+remainder = total_rows%%num_files
+if (remainder==0) {
+  file_records = floor(total_rows/num_files)
+} else {
+  file_records = floor(total_rows/(num_files-1))
+  }
+for (j in 1:total_rows)
+  {new_data[j,'i'] = ceiling(as.integer(new_data[j,'i'])/file_records)}
+```
+
+#Write the files
+
+```{r}
+for (a in 1:total_rows)
+  {new_data[a,'index'] = as.integer(new_data[a,'i'])}
+n_file = max(new_data['index'])
+for (k in 1:n_file)
+{
+  df1 = filter(new_data, new_data['index']==k)
+  df2 = df1['d']
+  write.table(df2, file = paste('File_',as.character(k),'.txt'), sep = '',row.names = FALSE , col.names = FALSE, quote = FALSE  )
+    }
+
+```
